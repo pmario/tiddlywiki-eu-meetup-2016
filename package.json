@@ -6,14 +6,23 @@
   "scripts": {
     "start": "tiddlywiki wiki-server/ --server 8080 $:/core/save/all text/plain text/html \"\" \"\" 0.0.0.0  # TODO there may be a problem in windows?!?!?",
     "test": "echo ---- no tests atm ----",
+
+    "prepull-pages": "mkdir tmp && cd tmp",
+    "pull-pages": "git pull https://github.com/Jermolene/jermolene.github.io.git",
+    "postpull-pages": "cd ..",
+
     "serve": "npm start",
     "prebuild": "rimraf wiki/output/*",
     "build": "tiddlywiki wiki --verbose --build",
-    "prestage": "npm run build",
+
+    "prestage": "npm run pull-pages && npm run build",
     "stage": "npm run stage:mkdir && npm run stage:rm && npm run stage:cp",
-    "stage:mkdir": "mkdir -p ../jermolene.github.io/tiddlywiki-eu-meetup-2016",
-    "stage:rm": "rimraf ../jermolene.github.io/tiddlywiki-eu-meetup-2016/*",
-    "stage:cp": "cp -R wiki/output/* ../jermolene.github.io/tiddlywiki-eu-meetup-2016"
+    "stage:mkdir": "mkdir -p tmp/jermolene.github.io/tiddlywiki-eu-meetup-2016",
+    "stage:rm": "rimraf tmp/jermolene.github.io/tiddlywiki-eu-meetup-2016/*",
+    "stage:cp": "cp -R wiki/output/* tmp/jermolene.github.io/tiddlywiki-eu-meetup-2016",
+
+    "predeploy": "npm run stage",
+    "deploy": "bash ./deploy-gh-pages.sh"
   },
   "repository": {
     "type": "git",
